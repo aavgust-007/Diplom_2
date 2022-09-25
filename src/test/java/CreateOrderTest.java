@@ -39,7 +39,6 @@ public class CreateOrderTest {
     public void CreateOrderWithAuthorizationTest() {
         ValidatableResponse response = userClient.create(user);
         accessToken = response.extract().path("accessToken");
-        System.out.println(accessToken);
         ValidatableResponse response2 = orderClient.create(order, accessToken);
         int statusCode = response2.extract().statusCode();
         assertEquals("Status code is incorrecr", SC_OK, statusCode);
@@ -72,7 +71,6 @@ public class CreateOrderTest {
     public void CreateOrderWithoutIngredientsAndAuthorizationTest() {
         ValidatableResponse response = userClient.create(user);
         accessToken = response.extract().path("accessToken");
-        System.out.println(accessToken);
         ValidatableResponse response2 = orderClient.createEmptyBody(order2, accessToken);
         int statusCode = response2.extract().statusCode();
         assertEquals("Status code is incorrecr", SC_BAD_REQUEST, statusCode);

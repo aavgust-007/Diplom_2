@@ -40,7 +40,6 @@ public class GetOrdersUserTest {
         OrdersUser response2 = ordersUserClient.getOrdersWithAutorization(accessToken);
         Orders[] orders = response2.getOrders();
         boolean actual = orders[0].getName().isEmpty();
-        System.out.println(orders[0].getName());
         assertFalse("there is no order with authorization", actual);
 
     }
