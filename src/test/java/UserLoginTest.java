@@ -1,3 +1,9 @@
+import api.client.UserClient;
+import api.model.User;
+import api.model.UserCredentials;
+import api.model.UserNotWithEmail;
+import api.util.UserGenerator;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -21,15 +27,14 @@ public class UserLoginTest {
         userNotWithEmail = UserGenerator.getUserNotWithEmailCreate();
         userClient = new UserClient();
     }
-
     @After
     public void tearDown() {
-        if (!accessToken.isEmpty()) {
-            userClient.delete(user, accessToken);
+        if (!accessToken.isEmpty()) {userClient.delete(accessToken);
         }
     }
 
     @Test
+    @DisplayName("Логин под существующим пользователем")
     public void userLoginTest() {
         userClient.create(user);
         ValidatableResponse response = userClient.login(userCredentials);
@@ -41,10 +46,9 @@ public class UserLoginTest {
         assertNotEquals("accessToken is null"
                 , "", accessToken);
     }
-
     @Test
+    @DisplayName("Логин с неверным логином и паролем")
     public void AuthorizationErrorUnderNonexistentUserTest() {
-
         ValidatableResponse response = userClient.login(userCredentials);
         int statusCode = response.extract().statusCode();
         assertEquals("Status code is incorrecr", SC_UNAUTHORIZED, statusCode);

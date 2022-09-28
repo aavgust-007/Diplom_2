@@ -1,3 +1,5 @@
+package api.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

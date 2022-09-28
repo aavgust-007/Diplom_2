@@ -1,3 +1,8 @@
+import api.client.UserClient;
+import api.model.User;
+import api.model.UserNotWithEmail;
+import api.util.UserGenerator;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -19,15 +24,14 @@ public class UserCreateTest {
         userNotWithEmail = UserGenerator.getUserNotWithEmailCreate();
         userClient = new UserClient();
     }
-
     @After
     public void tearDown() {
         if (!accessToken.isEmpty()) {
-            userClient.delete(user, accessToken);
+            userClient.delete(accessToken);
         }
     }
-
     @Test
+    @DisplayName("Создание уникального пользователя")
     public void userCanBeCreatedTest() {
         ValidatableResponse response = userClient.create(user);
         int statusCode = response.extract().statusCode();
@@ -38,8 +42,8 @@ public class UserCreateTest {
         assertNotEquals("accessToken is null"
                 , "", accessToken);
     }
-
     @Test
+    @DisplayName("Создание пользователя, который уже зарегистрирован")
     public void errorWhenCreatingDublicateUserTest() {
         ValidatableResponse response = userClient.create(user);
         ValidatableResponse response2 = userClient.create(user);
@@ -49,8 +53,8 @@ public class UserCreateTest {
         assertFalse("duplicate user created ", isCreated);
         accessToken = response.extract().path("accessToken");
     }
-
     @Test
+    @DisplayName("Создание пользователя без обязательных полей")
     public void userNotWithEmail() {
         ValidatableResponse response = userClient.createNotWithEmail(userNotWithEmail);
         int statusCode = response.extract().statusCode();
@@ -58,5 +62,4 @@ public class UserCreateTest {
         boolean isCreated = response.extract().path("success");
         assertFalse("created a user without an email", isCreated);
     }
-
 }

@@ -1,3 +1,5 @@
+package api.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +19,4 @@ public class Orders {
     private int number;
     private Date createdAt;
     private Date updatedAt;
-
-
 }
